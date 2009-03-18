@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<overlay id="shortkutz" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <statusbar id="status-bar">
+    <statusbarpanel id="my-panel" label="Hello, World">
+      <button label="Shortkutz" oncommand="Shortkutz.generate();" />
+    </statusbarpanel>
+  </statusbar>
+  <script src="shortkutz.js" />
+</overlay>
