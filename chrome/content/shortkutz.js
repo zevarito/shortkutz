@@ -28,7 +28,6 @@ var Shortkutz = {
     key_pressed = String.fromCharCode(event.keyCode);
     if( Shortkutz.keys[key_pressed] != null ) {
       Shortkutz.simulateClick( Shortkutz.keys[key_pressed] );
-      //gBrowser.loadURIWithFlags( Shortkutz.keys[key_pressed], nsIWebNavigation.LOAD_FLAGS_IS_LINK, gBrowser.currentURI, "utf-8", null );
     }
   },  
   
