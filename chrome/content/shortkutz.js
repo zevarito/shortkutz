@@ -73,7 +73,7 @@ var Shortkutz = {
   drawLetter : function( ref_element, letter ) {
     var div = content.document.createElement("div");
     div.innerHTML = letter; 
-    div.setAttribute("style", "background: #ffe849; border:solid 1px #000; color:#000; font-weight:bold; position:absolute; display:inline; padding:1px; margin:1px; width:auto; min-width:15px; text-align:center;");
+    div.setAttribute("style", "background: #ffe849; border:solid 1px #000; color:#000; font-size:90%; position:absolute; display:inline; padding:1px; margin:1px; width:auto; min-width:15px; text-align:center;");
     div.top = ref_element.top;
     div.left = ref_element.left;
     return ref_element.parentNode.insertBefore( div, ref_element );
