@@ -64,7 +64,7 @@ var Shortkutz = {
   defineLetterAccessKey : function( title ) {
     for( var i=0; i<title.length; i++ ) {
       var letter = title.charAt(i).toUpperCase();
-      if( this.keys[letter] == null ) {
+      if( letter.match("[A-Z0-9]") != null && this.keys[letter] == null ) {
         return letter;
       }
     }
