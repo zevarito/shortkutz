@@ -1,44 +1,83 @@
 var Shortkutz = {
   
   displayedShortcuts : [],
+  keys : [],
+  lastKeydownHandler : null,
 
   onLoad : function() { 
     this.initializated = true;  
   },
 
   display : function() {
-    if(this.displayedShortcuts.length == 0) {
-      this.collect();
+    if( this.displayedShortcuts.length == 0 ) {
+      this.collectAndShow();
     }
-    window.setTimeout(this.hide, 3000, this);
+    this.lastKeydownHandler = window.onkeypress;
+    window.onkeydown = this.keyDown;
+    window.setTimeout( this.hide, 3000, this );
   },
 
-  hide : function(instance) {
-    while( element = instance.displayedShortcuts.pop()) {
-      element.parentNode.removeChild(element);
+  hide : function( instance ) {
+    while( element = instance.displayedShortcuts.pop() ) {
+      element.parentNode.removeChild( element );
     }
+    window.onkeydown= this.lastKeydownHandler;
   },
   
-  collect : function() {
+  keyDown : function( event ) {
+    key_pressed = String.fromCharCode(event.keyCode);
+    if( Shortkutz.keys[key_pressed] != null ) {
+      Shortkutz.simulateClick( Shortkutz.keys[key_pressed] );
+      //gBrowser.loadURIWithFlags( Shortkutz.keys[key_pressed], nsIWebNavigation.LOAD_FLAGS_IS_LINK, gBrowser.currentURI, "utf-8", null );
+    }
+  },  
+  
+  simulateClick : function(element) {
+    var evt = document.createEvent("MouseEvents");
+    evt.initMouseEvent("click", true, true, window,
+      0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    var canceled = !element.dispatchEvent(evt);
+    if(canceled) {
+      // A handler called preventDefault
+    } else {
+      // None of the handlers called preventDefault
+    }
+  },
+
+  collectAndShow : function() {
     this.displayedShortcuts = new Array(0);    
+    this.keys = new Array(0);
     var links = content.document.getElementsByTagName("a");
     for( var i=0; i<links.length; i++ ) {
       if( links[i].href != "" ) {
-        if( div = this.drawKey(links[i]) ) {
-          this.displayedShortcuts.push(div);
+        var letter = this.defineLetterAccessKey( links[i].innerHTML );
+        if( letter ) {
+          div = this.drawLetter( links[i], letter );
+          href = links[i].getAttribute("href");
+          this.keys[letter] = links[i];
+          this.displayedShortcuts.push( div );
         }
       }
     }
   },
 
-  drawKey : function(link) {
+  defineLetterAccessKey : function( title ) {
+    for( var i=0; i<title.length; i++ ) {
+      var letter = title.charAt(i).toUpperCase();
+      if( this.keys[letter] == null ) {
+        return letter;
+      }
+    }
+    return false;
+  },
+  
+  drawLetter : function( ref_element, letter ) {
     var div = content.document.createElement("div");
-    div.innerHTML = link.innerHTML[0].toUpperCase();
-    div.setAttribute("class", "keystroke");
+    div.innerHTML = letter; 
     div.setAttribute("style", "background: #ffe849; border:solid 1px #000; color:#000; font-weight:bold; position:absolute; display:inline; padding:1px; margin:1px; width:15px;");
-    div.top = link.top;
-    div.left = link.left;
-    return link.parentNode.insertBefore(div, link);
+    div.top = ref_element.top;
+    div.left = ref_element.left;
+    return ref_element.parentNode.insertBefore( div, ref_element );
   }
 
 }
