@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <overlay id="shortkutz" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <keyset>
-    <key id="shortkutz-key" modifiers="alt" key="L" oncommand="Shortkutz.display();" />
+    <key id="shortkutz-key" modifiers="control alt" key="L" oncommand="Shortkutz.display();" />
   </keyset>
   <script type="application/x-javascript" src="chrome://shortkutz/content/shortkutz.js" />
 </overlay>
