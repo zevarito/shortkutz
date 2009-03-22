@@ -1,5 +1,7 @@
 /**
- * 
+ * Shortkutz Firefox Extension
+ * Author: Alvaro Gil, zevarito@gmail.com
+ * Licensed under MIT license, see license.txt
  *
  **/
 
