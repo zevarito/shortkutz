@@ -3,7 +3,7 @@
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
-                   em:id="8ca1bd31-a907-4834-8514-634613496ee8"
+                   em:id="{cc0cc3c0-dff2-404e-82c6-d72020666dd1}"
                    em:name="Shortkutz"
                    em:version="0.1"
                    em:creator="Alvaro Gil"
