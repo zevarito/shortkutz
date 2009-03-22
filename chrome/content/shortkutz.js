@@ -1,3 +1,8 @@
+/**
+ * 
+ *
+ **/
+
 var Shortkutz = {
   
   displayedShortcuts : [],
@@ -48,14 +53,12 @@ var Shortkutz = {
     this.keys = new Array(0);
     var links = content.document.getElementsByTagName("a");
     for( var i=0; i<links.length; i++ ) {
-      if( links[i].href != "" ) {
-        var letter = this.defineLetterAccessKey( links[i].innerHTML );
-        if( letter ) {
-          div = this.drawLetter( links[i], letter );
-          href = links[i].getAttribute("href");
-          this.keys[letter] = links[i];
-          this.displayedShortcuts.push( div );
-        }
+      var letter = this.defineLetterAccessKey( links[i].innerHTML );
+      if( letter ) {
+        div = this.drawLetter( links[i], letter );
+        href = links[i].getAttribute("href");
+        this.keys[letter] = links[i];
+        this.displayedShortcuts.push( div );
       }
     }
   },
@@ -73,7 +76,10 @@ var Shortkutz = {
   drawLetter : function( ref_element, letter ) {
     var div = content.document.createElement("div");
     div.innerHTML = letter; 
-    div.setAttribute("style", "background: #ffe849; border:solid 1px #000; color:#000; font-size:90%; position:absolute; display:inline; padding:1px; margin:1px; width:auto; min-width:15px; text-align:center;");
+    div.setAttribute("style", "background: #ffe849; border:solid 1px #000;" +
+          "color:#000; font-size:90%; position:absolute; display:inline;" +
+          "padding:1px; margin:1px; width:auto; min-width:15px;" +
+          "text-align:center;");
     div.top = ref_element.top;
     div.left = ref_element.left;
     return ref_element.parentNode.insertBefore( div, ref_element );
@@ -83,8 +89,8 @@ var Shortkutz = {
 
 window.addEventListener("load", function(e) { Shortkutz.onLoad(e); }, false);
 
-function myDump(aMessage) {
+function dumpit(msg) {
   var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
-                                 .getService(Components.interfaces.nsIConsoleService);
-  consoleService.logStringMessage("Shortkutz: " + aMessage);
+                        .getService(Components.interfaces.nsIConsoleService);
+  consoleService.logStringMessage("Shortkutz: " + msg);
 }
