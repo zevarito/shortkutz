@@ -81,7 +81,7 @@ var Shortkutz = {
     div.setAttribute("style", "background: #ffe849; border:solid 1px #000;" +
           "color:#000; font-size:90%; position:absolute; display:inline;" +
           "padding:1px; margin:1px; width:auto; min-width:15px;" +
-          "text-align:center;");
+          "text-align:center; -moz-border-radius:4px; opacity:.8");
     div.top = ref_element.top;
     div.left = ref_element.left;
     return ref_element.parentNode.insertBefore( div, ref_element );
