@@ -7,32 +7,37 @@
 
 var Shortkutz = {
   
-  displayedShortcuts : [],
+  displayed_shortcuts : [],
+  paged_links : [],
   keys : [],
-  lastKeydownHandler : null,
+  timer : null,
 
   onLoad : function() { 
     this.initializated = true;  
   },
 
   display : function() {
-    if( this.displayedShortcuts.length == 0 ) {
-      this.collectAndShow();
-    }
-    this.lastKeydownHandler = window.onkeypress;
+    this.hide(this);
+    this.collectAndShow();
     window.onkeydown = this.keyDown;
-    window.setTimeout( this.hide, 3000, this );
+    this.timer = window.setTimeout( this.hide, 3000, this );
   },
 
   hide : function( instance ) {
-    while( element = instance.displayedShortcuts.pop() ) {
+    while( element = instance.displayed_shortcuts.pop() ) {
       element.parentNode.removeChild( element );
     }
-    window.onkeydown= this.lastKeydownHandler;
+    window.onkeydown = null;
+    clearTimeout(this.timer);
   },
   
   keyDown : function( event ) {
     key_pressed = String.fromCharCode(event.keyCode);
+    if(event.altKey == true && event.ctrlKey) {
+      event.stopPropagation();
+      return true;
+    }
+
     if( Shortkutz.keys[key_pressed] != null ) {
       Shortkutz.simulateClick( Shortkutz.keys[key_pressed] );
     }
@@ -51,16 +56,36 @@ var Shortkutz = {
   },
 
   collectAndShow : function() {
-    this.displayedShortcuts = new Array(0);    
+    this.displayed_shortcuts = new Array(0);    
     this.keys = new Array(0);
-    var links = content.document.getElementsByTagName("a");
-    for( var i=0; i<links.length; i++ ) {
-      var letter = this.defineLetterAccessKey( links[i].innerHTML );
+    var links_to_display = new Array(0);
+    var all_links = content.document.getElementsByTagName("a");
+
+    if(all_links.length <= this.paged_links.length) {
+      this.paged_links = new Array(0);
+    }
+
+    for( var i=0; i<all_links.length; i++ ) {
+      found = false;
+
+      for( var j=0; j<this.paged_links.length; j++ ) {
+        if(this.paged_links[j] == all_links[i]) {
+          found = true;
+        }
+      }
+      if(!found) {
+        links_to_display.push(all_links[i]);
+      }
+    }
+
+    for( var i=0; i<links_to_display.length; i++ ) {
+      var letter = this.defineLetterAccessKey( links_to_display[i].innerHTML );
       if( letter ) {
-        div = this.drawLetter( links[i], letter );
-        href = links[i].getAttribute("href");
-        this.keys[letter] = links[i];
-        this.displayedShortcuts.push( div );
+        this.paged_links.push(links_to_display[i]);
+        div = this.drawLetter( links_to_display[i], letter );
+        href = links_to_display[i].getAttribute("href");
+        this.keys[letter] = links_to_display[i];
+        this.displayed_shortcuts.push( div );
       }
     }
   },
@@ -81,7 +106,7 @@ var Shortkutz = {
     div.setAttribute("style", "background: #ffe849; border:solid 1px #000;" +
           "color:#000; font-size:90%; position:absolute; display:inline;" +
           "padding:1px; margin:1px; width:auto; min-width:15px;" +
-          "text-align:center; -moz-border-radius:4px; opacity:.8");
+          "text-align:center; -moz-border-radius:4px; opacity:.85");
     div.top = ref_element.top;
     div.left = ref_element.left;
     return ref_element.parentNode.insertBefore( div, ref_element );
